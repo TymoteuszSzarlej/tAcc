@@ -1,0 +1,106 @@
+Projektowanie bazy danych do aplikacji do rachunkowości osobistej wymaga uwzględnienia różnych typów danych, które będą przechowywane i zarządzane. Taka baza danych powinna obejmować informacje o użytkownikach, kontach, transakcjach, kategoriach wydatków, budżetach i celach oszczędnościowych. Poniżej przedstawiam ogólny projekt bazy danych przy użyciu modelu relacyjnego (np. PostgreSQL, MySQL).
+
+### 1. **Tabela `users`**
+Tabela przechowująca dane użytkowników aplikacji.
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `user_id`        | INT         | Klucz główny, unikalny identyfikator użytkownika    |
+| `email`          | VARCHAR(255) | E-mail użytkownika (unikalny)                      |
+| `password_hash`  | VARCHAR(255) | Hasło użytkownika (zaszyfrowane)                   |
+| `first_name`     | VARCHAR(100) | Imię użytkownika                                  |
+| `last_name`      | VARCHAR(100) | Nazwisko użytkownika                               |
+| `created_at`     | TIMESTAMP   | Data rejestracji użytkownika                       |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji użytkownika            |
+
+### 2. **Tabela `accounts`**
+Tabela przechowująca informacje o kontach użytkownika (np. bankowe, gotówkowe).
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `account_id`     | INT         | Klucz główny, unikalny identyfikator konta          |
+| `user_id`        | INT         | Klucz obcy, identyfikator użytkownika               |
+| `account_name`   | VARCHAR(255) | Nazwa konta (np. "Konto bankowe", "Portfel")        |
+| `account_type`   | VARCHAR(50)  | Typ konta (np. "bankowe", "gotówkowe")              |
+| `balance`        | DECIMAL(10,2) | Saldo konta                                       |
+| `currency`       | VARCHAR(3)  | Waluta konta (np. "PLN", "USD")                     |
+| `created_at`     | TIMESTAMP   | Data utworzenia konta                              |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji konta                  |
+
+### 3. **Tabela `transactions`**
+Tabela przechowująca informacje o transakcjach (wydatki, dochody).
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `transaction_id` | INT         | Klucz główny, unikalny identyfikator transakcji     |
+| `account_id`     | INT         | Klucz obcy, identyfikator konta                    |
+| `transaction_type` | VARCHAR(50) | Typ transakcji (np. "wydatek", "dochód")           |
+| `amount`         | DECIMAL(10,2) | Kwota transakcji                                   |
+| `category_id`    | INT         | Klucz obcy, identyfikator kategorii                |
+| `description`    | VARCHAR(255) | Opis transakcji                                    |
+| `transaction_date` | TIMESTAMP   | Data transakcji                                    |
+| `created_at`     | TIMESTAMP   | Data utworzenia transakcji                         |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji transakcji             |
+
+### 4. **Tabela `categories`**
+Tabela przechowująca kategorie transakcji (np. "jedzenie", "transport").
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `category_id`    | INT         | Klucz główny, unikalny identyfikator kategorii      |
+| `user_id`        | INT         | Klucz obcy, identyfikator użytkownika               |
+| `category_name`  | VARCHAR(255) | Nazwa kategorii (np. "jedzenie", "transport")       |
+| `created_at`     | TIMESTAMP   | Data utworzenia kategorii                          |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji kategorii              |
+
+### 5. **Tabela `budgets`**
+Tabela przechowująca budżety użytkownika w różnych kategoriach na dany okres.
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `budget_id`      | INT         | Klucz główny, unikalny identyfikator budżetu        |
+| `user_id`        | INT         | Klucz obcy, identyfikator użytkownika               |
+| `category_id`    | INT         | Klucz obcy, identyfikator kategorii                |
+| `amount`         | DECIMAL(10,2) | Zaplanowany budżet na daną kategorię                |
+| `start_date`     | DATE        | Data rozpoczęcia budżetu                           |
+| `end_date`       | DATE        | Data zakończenia budżetu                           |
+| `created_at`     | TIMESTAMP   | Data utworzenia budżetu                            |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji budżetu                |
+
+### 6. **Tabela `goals`**
+Tabela przechowująca cele oszczędnościowe użytkownika.
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `goal_id`        | INT         | Klucz główny, unikalny identyfikator celu oszczędnościowego |
+| `user_id`        | INT         | Klucz obcy, identyfikator użytkownika               |
+| `goal_name`      | VARCHAR(255) | Nazwa celu (np. "Wakacje", "Zakup samochodu")       |
+| `target_amount`  | DECIMAL(10,2) | Kwota do osiągnięcia                               |
+| `saved_amount`   | DECIMAL(10,2) | Kwota już zaoszczędzona                           |
+| `deadline`       | DATE        | Termin realizacji celu                            |
+| `created_at`     | TIMESTAMP   | Data utworzenia celu                               |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji celu                   |
+
+### 7. **Tabela `settings`**
+Tabela przechowująca ustawienia aplikacji użytkownika (np. preferencje dotyczące walut, powiadomień).
+
+| Kolumna          | Typ         | Opis                                               |
+|------------------|-------------|----------------------------------------------------|
+| `setting_id`     | INT         | Klucz główny, unikalny identyfikator ustawienia     |
+| `user_id`        | INT         | Klucz obcy, identyfikator użytkownika               |
+| `setting_key`    | VARCHAR(100) | Klucz ustawienia (np. "currency", "notification")   |
+| `setting_value`  | VARCHAR(255) | Wartość ustawienia (np. "PLN", "enabled")          |
+| `created_at`     | TIMESTAMP   | Data utworzenia ustawienia                         |
+| `updated_at`     | TIMESTAMP   | Data ostatniej aktualizacji ustawienia             |
+
+### Relacje między tabelami:
+1. **`users` ↔ `accounts`**: Jeden użytkownik może mieć wiele kont (relacja 1:N).
+2. **`users` ↔ `categories`**: Jeden użytkownik może mieć wiele kategorii (relacja 1:N).
+3. **`users` ↔ `budgets`**: Jeden użytkownik może mieć wiele budżetów (relacja 1:N).
+4. **`users` ↔ `goals`**: Jeden użytkownik może mieć wiele celów oszczędnościowych (relacja 1:N).
+5. **`accounts` ↔ `transactions`**: Jedno konto może mieć wiele transakcji (relacja 1:N).
+6. **`categories` ↔ `transactions`**: Jedna kategoria może mieć wiele transakcji (relacja 1:N).
+7. **`users` ↔ `settings`**: Jeden użytkownik może mieć wiele ustawień (relacja 1:N).
+
+### Podsumowanie:
+Baza danych jest zaprojektowana tak, aby umożliwić łatwe zarządzanie finansami osobistymi, w tym śledzenie wydatków, dochodów, budżetów, celów oszczędnościowych i transakcji. Relacje między tabelami pozwalają na elastyczne zapytania oraz wygodne zarządzanie danymi w aplikacji.

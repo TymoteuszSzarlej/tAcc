@@ -1,0 +1,63 @@
+{
+    "Books":{
+        "Main":{
+            "BilanceAccounts"{
+                "Account1765":{
+                    "accountNumber":1765,
+                    "accountTitle":"Oszczędności",
+                    "transactionDate":"2024-11-11",
+                    "transactionDescription":"I bought a beer.",
+                    "bilance":0,
+                    "Values":{
+                        "Assets":{
+                            "LongTerm":{
+                                "asset1":{
+
+                                },
+                                "asset2":{
+
+                                }
+                            },
+                            "ShortTerm":{
+                                "asset2":{
+
+                                },
+                                "asset3":{
+
+                                }
+                            }
+                        },
+                        "LiabilitiesAndEquity":{
+                            "Liabilities":{
+                                "LongTerm":{
+                                    "liability1":{},
+                                    "liability2":{}
+                                },
+                                "ShortTerm":{
+                                    "liability1":{},
+                                    "liability2":{}
+                                }
+                            },
+                            "Equity":{
+                                    "resource1":{},
+                                    "resource2":{}
+                            }
+                        }
+                    }
+                }
+            },
+            "ProfitAndLossAccounts":{
+                "account1":{
+                    "Incomes":{},
+                    "Expenses":{}
+                }
+            }
+        },
+        "Auxilary":{
+            "acc4":{}
+        },
+        "AuxilaryForTurnover" {
+            "acc5":{}
+        }
+    }
+}
